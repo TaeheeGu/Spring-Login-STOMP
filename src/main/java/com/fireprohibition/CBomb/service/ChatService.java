@@ -1,7 +1,7 @@
 package com.fireprohibition.CBomb.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fireprohibition.CBomb.dto.ChatRoom;
+import com.fireprohibition.CBomb.model.ChatRoom;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -33,11 +33,11 @@ public class ChatService {
         return chatRooms.get(roomId);
     }
 
-    public ChatRoom createRoom(String roomName) {
+    public ChatRoom createRoom(String name) {
         String randomId = UUID.randomUUID().toString();
         ChatRoom chatRoom = ChatRoom.builder()
                 .roomId(randomId)
-                .roomName(roomName)
+                .name(name)
                 .build();
         chatRooms.put(randomId, chatRoom);
         return chatRoom;

@@ -1,6 +1,6 @@
 package com.fireprohibition.CBomb.controller;
 
-import com.fireprohibition.CBomb.dto.ChatRoom;
+import com.fireprohibition.CBomb.model.ChatRoom;
 import com.fireprohibition.CBomb.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -15,8 +15,8 @@ public class ChatController {
     private final ChatService chatService;
 
     @PostMapping
-    public ChatRoom create(@RequestParam String roomName) {
-        return chatService.createRoom(roomName);
+    public ChatRoom createRoom(@RequestParam String name) {
+        return chatService.createRoom(name);
     }
 
     @GetMapping
