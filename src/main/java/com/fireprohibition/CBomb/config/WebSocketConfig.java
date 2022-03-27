@@ -1,24 +1,42 @@
 package com.fireprohibition.CBomb.config;
 
-import com.fireprohibition.CBomb.handler.WebSocketChatHandler;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.socket.config.annotation.EnableWebSocket;
-import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
-import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
+import org.springframework.messaging.simp.config.MessageBrokerRegistry;
+import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
+import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
+import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
-@Slf4j
-@RequiredArgsConstructor
 @Configuration
-@EnableWebSocket
-public class WebSocketConfig implements WebSocketConfigurer {
+/**
+ * basic websocket server
+ */
+//@Slf4j
+//@RequiredArgsConstructor
+//@EnableWebSocket
+//public class WebSocketConfig implements WebSocketConfigurer {
+//
+//    private final WebSocketChatHandler webSocketHandler;
+//
+//    @Override
+//    public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
+//        registry.addHandler(webSocketHandler, "/ws/chat").setAllowedOrigins("*");
+//    }
+//}
 
-    private final WebSocketChatHandler webSocketHandler;
+/**
+ * Stomp
+ */
+@EnableWebSocketMessageBroker
+public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
-    public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(webSocketHandler, "/ws/chat").setAllowedOrigins("*");
+    public void configureMessageBroker(MessageBrokerRegistry config) {
+        config.enableSimpleBroker("/sub");
+        config.setApplicationDestinationPrefixes("/pub");
     }
 
+    @Override
+    public void registerStompEndpoints(StompEndpointRegistry registry) {
+        registry.addEndpoint("/ws-stomp").setAllowedOriginPatterns("*").withSockJS();
+    }
 }
