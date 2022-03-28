@@ -1,17 +1,18 @@
 package com.fireprohibition.CBomb.controller;
 
 import com.fireprohibition.CBomb.model.ChatRoom;
+import com.fireprohibition.CBomb.model.LoginInfo;
 import com.fireprohibition.CBomb.repository.ChatRoomRepository;
+import com.fireprohibition.CBomb.service.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/**
- * STMOP
- */
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/chat")
@@ -19,8 +20,10 @@ public class ChatRoomController {
 
     private final ChatRoomRepository chatRoomRepository;
 
+    private final JwtTokenProvider jwtTokenProvider;
+
     @GetMapping("/room")
-    public String rooms(Model model) {
+    public String rooms() {
         return "/chat/room";
     }
 
@@ -46,5 +49,13 @@ public class ChatRoomController {
     @ResponseBody
     public ChatRoom roomInfo(@PathVariable String roomId) {
         return chatRoomRepository.findRoomById(roomId);
+    }
+
+    @GetMapping("/user")
+    @ResponseBody
+    public LoginInfo getUserInfo() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        return LoginInfo.builder().name(name).token(jwtTokenProvider.generateToken(name)).build();
     }
 }
