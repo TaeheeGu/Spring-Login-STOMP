@@ -1,9 +1,12 @@
 package com.fireprohibition.CBomb.repository;
 
 import com.fireprohibition.CBomb.model.ChatRoom;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import java.util.*;
 
 @Repository
